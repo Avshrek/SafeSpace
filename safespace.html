@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Safe Space for You</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f0f0;
+      margin: 0;
+      padding: 20px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      color: #b85252;
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #b85252;
+      border-radius: 8px;
+      resize: vertical;
+    }
+    button {
+      background-color: #b85252;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #a44141;
+    }
+    #savedNotes {
+      margin-top: 20px;
+      background: white;
+      border: 1px solid #b85252;
+      border-radius: 8px;
+      padding: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Safe Space Ananya❣️</h1>
+  <textarea id="noteInput" placeholder="Write whatever is hurting you here..."></textarea>
+  <button onclick="saveNote()">Save</button>
+
+  <h2>Previous Notes</h2>
+  <div id="savedNotes">No notes saved yet.</div>
+
+  <script>
+    function loadNotes() {
+      const notes = JSON.parse(localStorage.getItem('hurtNotes') || '[]');
+      const savedNotesDiv = document.getElementById('savedNotes');
+      if (notes.length === 0) {
+        savedNotesDiv.textContent = 'No notes saved yet.';
+      } else {
+        savedNotesDiv.textContent = '';
+        notes.forEach((note, index) => {
+          const p = document.createElement('p');
+          p.textContent = `Note ${index + 1}:\n${note}`;
+          p.style.borderBottom = '1px solid #b85252';
+          p.style.paddingBottom = '8px';
+          savedNotesDiv.appendChild(p);
+        });
+      }
+    }
+
+    function saveNote() {
+      const input = document.getElementById('noteInput');
+      const newNote = input.value.trim();
+      if (!newNote) {
+        alert('Please write something before saving.');
+        return;
+      }
+      const notes = JSON.parse(localStorage.getItem('hurtNotes') || '[]');
+      notes.push(newNote);
+      localStorage.setItem('hurtNotes', JSON.stringify(notes));
+      input.value = '';
+      loadNotes();
+      alert('Your note was saved safely.');
+    }
+
+    loadNotes();
+  </script>
+</body>
+</html>
